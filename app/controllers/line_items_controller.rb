@@ -43,7 +43,7 @@ class LineItemsController < ApplicationController
     
     @cart = current_cart
     product = Product.find(params[:product_id])
-    @line_item = @cart.line_items.build(product_id: product.id)
+    @line_item = @cart.add_product(product.id)
 
     #@line_item = LineItem.new(params[:line_item])
 
@@ -79,10 +79,11 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1.json
   def destroy
     @line_item = LineItem.find(params[:id])
+    cart_id = @line_item.cart_id
     @line_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to line_items_url }
+      format.html { redirect_to "#{carts_path}/#{cart_id}" }
       format.json { head :no_content }
     end
   end
