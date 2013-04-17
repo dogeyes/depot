@@ -50,8 +50,9 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       if @line_item.save
         session[:counter] = 0;
-        format.html { redirect_to @line_item.cart, notice: 'Line item was successfully created.' }
+        format.html { redirect_to store_url}
         format.json { render json: @line_item, status: :created, location: @line_item }
+        format.js {@current_item = @line_item}
       else
         format.html { render action: "new" }
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
@@ -83,7 +84,7 @@ class LineItemsController < ApplicationController
     @line_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to "#{carts_path}/#{cart_id}" }
+      format.html { redirect_to line_items_path }
       format.json { head :no_content }
     end
   end
